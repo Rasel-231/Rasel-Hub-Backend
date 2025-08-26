@@ -5,6 +5,8 @@ import { StatusCodes } from "http-status-codes";
 import { authServices } from "./auth.services";
 import config from "../../../config";
 
+import jwt from "jsonwebtoken";
+
 // ================= LOGIN =================
 const authLogin = catchAsync(async (req: Request, res: Response) => {
   const loginUser = req.body;
@@ -62,7 +64,7 @@ const logout = catchAsync(async (req: Request, res: Response) => {
     statusCode: StatusCodes.OK,
     success: true,
     message: "User logged out successfully",
-    data: null,
+    data: { timestamp: new Date().toISOString() },
   });
 });
 
@@ -105,8 +107,33 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// ================= VERIFY TOKEN =================
+
+const verifyToken = catchAsync(async (req: Request, res: Response) => {
+  const { token } = req.cookies;
+  if (!token) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: "Token is missing" });
+  }
+  //verify token
+  const verifiedToken = await authServices.verifyToken(token);
+  if (!verifiedToken) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: "Token is invalid" });
+  }
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Token is valid",
+    data: verifiedToken,
+  });
+});
+
 export const authController = {
   authLogin,
   logout,
   refreshToken,
+  verifyToken,
 };
