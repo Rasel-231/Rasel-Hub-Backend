@@ -5,8 +5,6 @@ import { StatusCodes } from "http-status-codes";
 import { authServices } from "./auth.services";
 import config from "../../../config";
 
-import jwt from "jsonwebtoken";
-
 // ================= LOGIN =================
 const authLogin = catchAsync(async (req: Request, res: Response) => {
   const loginUser = req.body;
@@ -25,7 +23,7 @@ const authLogin = catchAsync(async (req: Request, res: Response) => {
   const cookieOptions = {
     httpOnly: true,
     secure: config.node_env === "production",
-    sameSite: "strict" as const,
+    sameSite: "none" as const,
   };
 
   // Set access token cookie (short-lived)
@@ -54,7 +52,7 @@ const logout = catchAsync(async (req: Request, res: Response) => {
   const cookieOptions = {
     httpOnly: true,
     secure: config.node_env === "production",
-    sameSite: "strict" as const,
+    sameSite: "none" as const,
   };
 
   res.clearCookie("token", cookieOptions);
@@ -84,7 +82,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const cookieOptions = {
     httpOnly: true,
     secure: config.node_env === "production",
-    sameSite: "lax" as const,
+    sameSite: "none" as const,
   };
 
   // Set new access token cookie

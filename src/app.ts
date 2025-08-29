@@ -6,12 +6,11 @@ import { StatusCodes } from "http-status-codes";
 import cookieParser from "cookie-parser";
 const app = express();
 
-const port = 5001;
-
 //middlewares
 app.use(
   cors({
     origin: "https://my-frontend-inky-iota.vercel.app",
+    // origin: "http://localhost:3000",
     credentials: true,
   })
 );
