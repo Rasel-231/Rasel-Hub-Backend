@@ -84,7 +84,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const cookieOptions = {
     httpOnly: true,
     secure: config.node_env === "production",
-    sameSite: "strict" as const,
+    sameSite: "lax" as const,
   };
 
   // Set new access token cookie
