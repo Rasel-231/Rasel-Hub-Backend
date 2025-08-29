@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import express = require("express");
+import express from "express";
 import cors from "cors";
 import Routes from "./app/Routes";
 import { StatusCodes } from "http-status-codes";
@@ -11,7 +11,7 @@ const port = 5001;
 //middlewares
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://my-frontend-d7jifd1e8-halifaxs-projects.vercel.app",
     credentials: true,
   })
 );
