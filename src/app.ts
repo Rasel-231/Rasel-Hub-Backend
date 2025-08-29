@@ -11,7 +11,7 @@ const port = 5001;
 //middlewares
 app.use(
   cors({
-    origin: "https://my-frontend-d7jifd1e8-halifaxs-projects.vercel.app",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );

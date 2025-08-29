@@ -12,7 +12,7 @@ const app = express();
 const port = 5001;
 //middlewares
 app.use((0, cors_1.default)({
-    origin: "https://my-frontend-d7jifd1e8-halifaxs-projects.vercel.app",
+    origin: "http://localhost:3000",
     credentials: true,
 }));
 app.use(express.json());
