@@ -15,27 +15,27 @@ const authLogin = catchAsync(async (req: Request, res: Response) => {
       .json({ message: "userId missing in request body" });
   }
 
-  // Login service call
+
   const result = await authServices.authLogin(loginUser);
   const { token, refreshToken } = result;
 
-  // Cookie options
+
   const cookieOptions = {
     httpOnly: true,
-    secure: config.node_env === "development",
+    secure: config.node_env === "production",
     sameSite: "none" as const,
   };
 
-  // Set access token cookie (short-lived)
+
   res.cookie("token", token, {
     ...cookieOptions,
-    maxAge: 1000 * 60 * 15, // 15 minutes
+    maxAge: 1000 * 60 * 15,
   });
 
-  // Set refresh token cookie (long-lived)
+
   res.cookie("refreshToken", refreshToken, {
     ...cookieOptions,
-    maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+    maxAge: 1000 * 60 * 60 * 24 * 7,
   });
 
   sendResponse(res, {
@@ -48,10 +48,9 @@ const authLogin = catchAsync(async (req: Request, res: Response) => {
 
 // ================= LOGOUT =================
 const logout = catchAsync(async (req: Request, res: Response) => {
-  // Clear cookies
   const cookieOptions = {
     httpOnly: true,
-    secure: config.node_env === "development",
+    secure: config.node_env === "production",
     sameSite: "none" as const,
   };
 
@@ -66,7 +65,6 @@ const logout = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// ================= REFRESH TOKEN =================
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
 
@@ -76,7 +74,6 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
       .json({ message: "Refresh token missing" });
   }
 
-  // Refresh token service call
   const result = await authServices.refreshToken(refreshToken);
 
   const cookieOptions = {
@@ -85,16 +82,16 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
     sameSite: "none" as const,
   };
 
-  // Set new access token cookie
+
   res.cookie("token", result.token, {
     ...cookieOptions,
-    maxAge: 1000 * 60 * 15, // 15 minutes
+    maxAge: 1000 * 60 * 15,
   });
 
-  // Reset refresh token cookie if new one is issued
+
   res.cookie("refreshToken", result.refreshToken, {
     ...cookieOptions,
-    maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+    maxAge: 1000 * 60 * 60 * 24 * 7,
   });
 
   sendResponse(res, {
@@ -115,7 +112,7 @@ const verifyToken = catchAsync(async (req: Request, res: Response) => {
       .status(StatusCodes.BAD_REQUEST)
       .json({ message: "Token is missing" });
   }
-  //verify token
+
   const verifiedToken = await authServices.verifyToken(token);
   if (!verifiedToken) {
     return res
