@@ -9,7 +9,7 @@ const app = express();
 //middlewares
 app.use(
   cors({
-    // origin: "https://my-frontend-inky-iota.vercel.app",
+
     origin: "http://localhost:3000",
     credentials: true,
   })
