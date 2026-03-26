@@ -22,7 +22,7 @@ const authLogin = catchAsync(async (req: Request, res: Response) => {
   // Cookie options
   const cookieOptions = {
     httpOnly: true,
-    secure: config.node_env === "production",
+    secure: config.node_env === "development",
     sameSite: "none" as const,
   };
 
@@ -51,7 +51,7 @@ const logout = catchAsync(async (req: Request, res: Response) => {
   // Clear cookies
   const cookieOptions = {
     httpOnly: true,
-    secure: config.node_env === "production",
+    secure: config.node_env === "development",
     sameSite: "none" as const,
   };
 
@@ -109,6 +109,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 
 const verifyToken = catchAsync(async (req: Request, res: Response) => {
   const { token } = req.cookies;
+  console.log("Controller verify Token", token)
   if (!token) {
     return res
       .status(StatusCodes.BAD_REQUEST)

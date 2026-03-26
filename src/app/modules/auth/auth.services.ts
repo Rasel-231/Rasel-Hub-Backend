@@ -72,6 +72,7 @@ const verifyToken = async (token: string): Promise<any> => {
     const decoded = jwt.verify(token, config.access_token as string) as {
       userId: string;
     };
+    console.log("decoded Token", decoded);
     return { userId: decoded.userId };
   } catch (error) {
     console.log(error);

@@ -8,6 +8,7 @@ interface AuthRequest extends Request {
 
 export const auth = () => {
   return async (req: AuthRequest, res: Response, next: NextFunction) => {
+    console.log("Middleware_Token", req.cookies.token);
     try {
       let token =
         req.headers.authorization?.split(" ")[1] || req.cookies?.token;
