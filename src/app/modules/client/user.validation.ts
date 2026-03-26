@@ -9,7 +9,7 @@ export const userEntryZodSchema = z.object({
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
     .regex(/[a-z]/, "Password must contain at least one lowercase letter")
     .regex(/[0-9]/, "Password must contain at least one number"),
-  phone: z.string().min(11, "Phone number is required"),
+
   category: z.string().min(1, "Category is required"),
   sitename: z.string().min(1, "Sitename is required"),
 });
@@ -24,7 +24,7 @@ export const userUpdateZodSchema = z
       .regex(/[a-z]/)
       .regex(/[0-9]/)
       .optional(),
-    phone: z.string().min(11).optional(),
+
     category: z.string().min(1).optional(),
     sitename: z.string().min(1).optional(),
   })
