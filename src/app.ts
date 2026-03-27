@@ -10,8 +10,11 @@ const app = express();
 app.use(
   cors({
 
-    origin: "http://localhost:3000",
+    // origin: "http://localhost:3000",
+
+    origin: "https://rasel-hub-frontend.vercel.app",
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   })
 );
 app.use(express.json());
