@@ -8,6 +8,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../../../config"));
 const auth = () => {
     return async (req, res, next) => {
+        console.log("Middleware_Token", req.cookies.token);
         try {
             let token = req.headers.authorization?.split(" ")[1] || req.cookies?.token;
             if (!token && req.cookies?.token) {

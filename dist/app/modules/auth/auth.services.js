@@ -62,6 +62,7 @@ const refreshToken = async (token) => {
 const verifyToken = async (token) => {
     try {
         const decoded = jsonwebtoken_1.default.verify(token, config_1.default.access_token);
+        console.log("decoded Token", decoded);
         return { userId: decoded.userId };
     }
     catch (error) {

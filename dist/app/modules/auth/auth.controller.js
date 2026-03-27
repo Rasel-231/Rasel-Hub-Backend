@@ -17,24 +17,20 @@ const authLogin = (0, catchAsync_1.catchAsync)(async (req, res) => {
             .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
             .json({ message: "userId missing in request body" });
     }
-    // Login service call
     const result = await auth_services_1.authServices.authLogin(loginUser);
     const { token, refreshToken } = result;
-    // Cookie options
     const cookieOptions = {
         httpOnly: true,
         secure: config_1.default.node_env === "production",
-        sameSite: "strict",
+        sameSite: "none",
     };
-    // Set access token cookie (short-lived)
     res.cookie("token", token, {
         ...cookieOptions,
-        maxAge: 1000 * 60 * 15, // 15 minutes
+        maxAge: 1000 * 60 * 15,
     });
-    // Set refresh token cookie (long-lived)
     res.cookie("refreshToken", refreshToken, {
         ...cookieOptions,
-        maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+        maxAge: 1000 * 60 * 60 * 24 * 7,
     });
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_codes_1.StatusCodes.OK,
@@ -45,11 +41,10 @@ const authLogin = (0, catchAsync_1.catchAsync)(async (req, res) => {
 });
 // ================= LOGOUT =================
 const logout = (0, catchAsync_1.catchAsync)(async (req, res) => {
-    // Clear cookies
     const cookieOptions = {
         httpOnly: true,
         secure: config_1.default.node_env === "production",
-        sameSite: "strict",
+        sameSite: "none",
     };
     res.clearCookie("token", cookieOptions);
     res.clearCookie("refreshToken", cookieOptions);
@@ -60,7 +55,6 @@ const logout = (0, catchAsync_1.catchAsync)(async (req, res) => {
         data: { success: false, timestamp: new Date().toISOString() },
     });
 });
-// ================= REFRESH TOKEN =================
 const refreshToken = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const { refreshToken } = req.cookies;
     if (!refreshToken) {
@@ -68,22 +62,19 @@ const refreshToken = (0, catchAsync_1.catchAsync)(async (req, res) => {
             .status(http_status_codes_1.StatusCodes.UNAUTHORIZED)
             .json({ message: "Refresh token missing" });
     }
-    // Refresh token service call
     const result = await auth_services_1.authServices.refreshToken(refreshToken);
     const cookieOptions = {
         httpOnly: true,
         secure: config_1.default.node_env === "production",
-        sameSite: "strict",
+        sameSite: "none",
     };
-    // Set new access token cookie
     res.cookie("token", result.token, {
         ...cookieOptions,
-        maxAge: 1000 * 60 * 15, // 15 minutes
+        maxAge: 1000 * 60 * 15,
     });
-    // Reset refresh token cookie if new one is issued
     res.cookie("refreshToken", result.refreshToken, {
         ...cookieOptions,
-        maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+        maxAge: 1000 * 60 * 60 * 24 * 7,
     });
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_codes_1.StatusCodes.OK,
@@ -95,12 +86,12 @@ const refreshToken = (0, catchAsync_1.catchAsync)(async (req, res) => {
 // ================= VERIFY TOKEN =================
 const verifyToken = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const { token } = req.cookies;
+    console.log("Controller verify Token", token);
     if (!token) {
         return res
             .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
             .json({ message: "Token is missing" });
     }
-    //verify token
     const verifiedToken = await auth_services_1.authServices.verifyToken(token);
     if (!verifiedToken) {
         return res
