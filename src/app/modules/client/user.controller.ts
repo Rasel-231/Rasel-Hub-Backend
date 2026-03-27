@@ -25,7 +25,7 @@ const getAllUser = catchAsync(async (req: Request, res: Response) => {
 });
 const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
-  const result = await UserNameServices.getSingleUser(id);
+  const result = await UserNameServices.getSingleUser(id as string);
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
@@ -35,7 +35,7 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
 });
 const deleteUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
-  const result = await UserNameServices.deleteUser(id);
+  const result = await UserNameServices.deleteUser(id as string);
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
@@ -46,7 +46,7 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
 const updateUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const updateData = req.body;
-  const result = await UserNameServices.updateUser(id, updateData);
+  const result = await UserNameServices.updateUser(id as string, updateData);
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
