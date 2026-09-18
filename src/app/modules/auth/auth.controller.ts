@@ -7,6 +7,7 @@ import config from "../../../config";
 
 
 
+
 const getCookieOptions = () => ({
   httpOnly: true,
   secure: config.node_env === "production",
@@ -33,7 +34,7 @@ const authLogin = catchAsync(async (req: Request, res: Response) => {
   const cookieOptions = getCookieOptions();
 
 
-  res.cookie("token", token, {
+  res.cookie("accessToken", token, {
     ...cookieOptions,
     maxAge: 1000 * 60 * 15,
   });
@@ -57,7 +58,7 @@ const authLogin = catchAsync(async (req: Request, res: Response) => {
 const logout = catchAsync(async (req: Request, res: Response) => {
   const cookieOptions = getCookieOptions();
 
-  res.clearCookie("token", cookieOptions);
+  res.clearCookie("accessToken", cookieOptions);
   res.clearCookie("refreshToken", cookieOptions);
 
 
@@ -70,26 +71,20 @@ const logout = catchAsync(async (req: Request, res: Response) => {
 });
 
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
-  console.log("===== REFRESH START =====", { cookies: req.cookies });
   const { refreshToken } = req.cookies;
 
   if (!refreshToken) {
-    console.log("===== REFRESH FAILED: token missing =====");
     return res
       .status(StatusCodes.UNAUTHORIZED)
       .json({ message: "Refresh token missing" });
   }
 
   const result = await authServices.refreshToken(refreshToken);
-  console.log("===== REFRESH SERVICE RESULT =====", {
-    token: result.token ? "SET" : "EMPTY",
-    refreshToken: result.refreshToken ? "SET" : "EMPTY",
-  });
 
   const cookieOptions = getCookieOptions();
 
 
-  res.cookie("token", result.token, {
+  res.cookie("accessToken", result.token, {
     ...cookieOptions,
     maxAge: 1000 * 60 * 15,
   });
@@ -114,7 +109,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 
 const verifyToken = catchAsync(async (req: Request, res: Response) => {
 
-  const token = req.cookies?.token;
+  const token = req.cookies?.accessToken || req.cookies?.token;
 
   if (!token) {
     return res

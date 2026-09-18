@@ -10,10 +10,10 @@ export const auth = () => {
   return async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let token =
-        req.headers.authorization?.split(" ")[1] || req.cookies?.token;
+        req.headers.authorization?.split(" ")[1] || req.cookies?.accessToken || req.cookies?.token;
 
-      if (!token && req.cookies?.token) {
-        token = req.cookies.token;
+      if (!token && req.cookies?.accessToken) {
+        token = req.cookies.accessToken;
       }
 
       if (!token) {
