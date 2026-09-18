@@ -54,7 +54,6 @@ const authLogin = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// ================= LOGOUT =================
 const logout = catchAsync(async (req: Request, res: Response) => {
   const cookieOptions = getCookieOptions();
 
@@ -111,7 +110,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// ================= VERIFY TOKEN =================
+
 
 const verifyToken = catchAsync(async (req: Request, res: Response) => {
 
