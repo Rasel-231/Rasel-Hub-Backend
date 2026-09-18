@@ -9,22 +9,22 @@ interface AuthRequest extends Request {
 export const auth = () => {
   return async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
-      let token =
-        req.headers.authorization?.split(" ")[1] || req.cookies?.accessToken || req.cookies?.token;
+      const authHeader = req.headers.authorization;
+      const bearerToken = authHeader?.startsWith("Bearer ")
+        ? authHeader.split(" ")[1]
+        : undefined;
 
-      if (!token && req.cookies?.accessToken) {
-        token = req.cookies.accessToken;
-      }
+      const token =
+        bearerToken || req.cookies?.accessToken || req.cookies?.token;
 
       if (!token) {
         return res
           .status(401)
-          .json({ message: "Authorization token is missing" });
+          .json({ message: "Access token is missing" });
       }
 
       const verifiedUser = jwt.verify(token, config.access_token as string);
       req.user = verifiedUser;
-      console.log("verifiedUser", verifiedUser);
 
       next();
     } catch (error) {
