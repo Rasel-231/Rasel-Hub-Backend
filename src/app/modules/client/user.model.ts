@@ -5,7 +5,7 @@ const userNameSchema = new Schema<IUserName>(
   {
     username: { type: String, required: true },
     password: { type: String, required: true },
-    phone: { type: Number, required: true },
+    phone: { type: String, required: true },
     category: { type: String, required: true },
     sitename: { type: String, required: true },
   },

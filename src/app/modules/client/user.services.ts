@@ -6,7 +6,7 @@ const createUser = async (payload: IUserName): Promise<IUserName> => {
   return result;
 };
 const getAllUser = async (): Promise<IUserName[]> => {
-  const result = await UserNameModel.find({}); // সব user fetch করবে
+  const result = await UserNameModel.find({});
   return result;
 };
 const getSingleUser = async (id: string): Promise<IUserName | null> => {
@@ -18,6 +18,9 @@ const deleteUser = async (id: string): Promise<IUserName | null> => {
   return result;
 };
 const updateUser = async (
+
+
+
   id: string,
   payload: Partial<IUserName>
 ): Promise<IUserName | null> => {

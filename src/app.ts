@@ -40,4 +40,28 @@ app.use((req: Request, res: Response) => {
   });
 });
 
+//error handler
+app.use(
+  (
+    error: unknown,
+    req: Request,
+    res: Response,
+    next: (arg0?: never) => void
+  ) => {
+    const err = error as {
+      statusCode?: number;
+      status?: number;
+      message?: string;
+      issues?: { message: string }[];
+    };
+    const status = err.statusCode || err.status || StatusCodes.INTERNAL_SERVER_ERROR;
+    const message = err.issues?.[0]?.message || err.message || "Internal Server Error";
+    res.status(status).json({
+      success: false,
+      message,
+      errMessage: err.issues || [],
+    });
+  }
+);
+
 export default app;

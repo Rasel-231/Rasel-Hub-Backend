@@ -5,6 +5,14 @@ import validateRequest from "../middleware/validateRequest";
 import { auth } from "../middleware/auth";
 const router = express.Router();
 
+router.get("/", auth(), UserNameController.getAllUser);
+router.post(
+  "/create-user",
+  auth(),
+
+  validateRequest({ body: userValidationByZod.userEntryZodSchema }),
+  UserNameController.createUser
+);
 router.get("/:id", auth(), UserNameController.getSingleUser);
 router.patch(
   "/:id",
@@ -15,13 +23,5 @@ router.patch(
   UserNameController.updateUser
 );
 router.delete("/:id", auth(), UserNameController.deleteUser);
-router.get("/", auth(), UserNameController.getAllUser);
-router.post(
-  "/create-user",
-  auth(),
-
-  validateRequest({ body: userValidationByZod.userEntryZodSchema }),
-  UserNameController.createUser
-);
 
 export const UserNameRoutes = router;

@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+const phoneSchema = z
+  .union([z.string(), z.number()])
+  .refine((value) => /^\d{11}$/.test(String(value)), {
+    message: "Phone must be 11 digits",
+  });
+
 export const userEntryZodSchema = z.object({
   username: z.string().min(4, "Username is required"),
   password: z
@@ -8,7 +14,7 @@ export const userEntryZodSchema = z.object({
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
     .regex(/[a-z]/, "Password must contain at least one lowercase letter")
     .regex(/[0-9]/, "Password must contain at least one number"),
-  phone: z.string().min(11, "Phone must be 11 digits").max(11, "Phone must be 11 digits"),
+  phone: phoneSchema,
   category: z.string().min(1, "Category is required"),
   sitename: z.string().min(1, "Sitename is required"),
 });
@@ -24,7 +30,7 @@ export const userUpdateZodSchema = z
       .regex(/[0-9]/)
       .optional(),
 
-    phone: z.string().min(11).max(11).optional(),
+    phone: phoneSchema.optional(),
     category: z.string().min(1).optional(),
     sitename: z.string().min(1).optional(),
   })

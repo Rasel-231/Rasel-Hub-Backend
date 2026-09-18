@@ -10,4 +10,5 @@ exports.router = express_1.default.Router();
 exports.router.post("/login", auth_controller_1.authController.authLogin);
 exports.router.post("/logout", auth_controller_1.authController.logout);
 exports.router.get("/verify", auth_controller_1.authController.verifyToken);
+exports.router.get("/refresh", auth_controller_1.authController.refreshToken);
 exports.authRoutes = exports.router;

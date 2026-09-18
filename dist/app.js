@@ -12,7 +12,9 @@ const app = (0, express_1.default)();
 //middlewares
 app.use((0, cors_1.default)({
     origin: "http://localhost:3000",
+    // origin: "https://rasel-hub-frontend.vercel.app",
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 }));
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());

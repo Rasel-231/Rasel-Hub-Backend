@@ -7,7 +7,7 @@ const createUser = async (payload) => {
     return result;
 };
 const getAllUser = async () => {
-    const result = await user_model_1.UserNameModel.find({}); // সব user fetch করবে
+    const result = await user_model_1.UserNameModel.find({});
     return result;
 };
 const getSingleUser = async (id) => {
