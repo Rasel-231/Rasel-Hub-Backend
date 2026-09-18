@@ -28,13 +28,13 @@ const authLogin = catchAsync(async (req: Request, res: Response) => {
 
 
   const result = await authServices.authLogin(loginUser);
-  const { token, refreshToken } = result;
+  const { token: accessToken, refreshToken } = result;
 
 
   const cookieOptions = getCookieOptions();
 
 
-  res.cookie("accessToken", token, {
+  res.cookie("accessToken", accessToken, {
     ...cookieOptions,
     maxAge: 1000 * 60 * 15,
   });
